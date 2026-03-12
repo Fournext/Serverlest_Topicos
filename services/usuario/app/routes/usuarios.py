@@ -1,11 +1,8 @@
 from flask import Blueprint, jsonify, request
 from psycopg.errors import UniqueViolation
-from app.db import get_connection, init_db
-
 from app.db import get_connection
 
 usuarios_bp = Blueprint("usuarios", __name__)
-init_db()
 
 @usuarios_bp.get("/")
 def listar_usuarios():
