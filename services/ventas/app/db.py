@@ -23,7 +23,7 @@ def get_connection():
 def init_db():
     create_table_sql = """
     CREATE TABLE IF NOT EXISTS ventas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id BIGSERIAL PRIMARY KEY,
         cliente TEXT NOT NULL,
         producto TEXT NOT NULL,
         cantidad INTEGER NOT NULL,

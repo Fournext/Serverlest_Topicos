@@ -3,8 +3,6 @@ from app.db import get_connection, init_db
 
 ventas_bp = Blueprint("ventas", __name__)
 
-# inicializa la tabla al cargar el módulo
-init_db()
 
 
 @ventas_bp.get("/")
