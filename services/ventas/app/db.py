@@ -1,30 +1,37 @@
-import sqlite3
-from pathlib import Path
+import os
+from contextlib import contextmanager
+import psycopg
+from psycopg.rows import dict_row
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-DB_PATH = BASE_DIR / "ventas.db"
+
+def get_database_url() -> str:
+    database_url = os.getenv("DATABASE_URL", "").strip()
+    if not database_url:
+        raise RuntimeError("Falta la variable de entorno DATABASE_URL")
+    return database_url
 
 
+@contextmanager
 def get_connection():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+    conn = psycopg.connect(get_database_url(), row_factory=dict_row)
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 
 def init_db():
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS ventas (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            cliente TEXT NOT NULL,
-            producto TEXT NOT NULL,
-            cantidad INTEGER NOT NULL,
-            precio_unitario REAL NOT NULL,
-            total REAL NOT NULL
-        )
-    """)
-
-    conn.commit()
-    conn.close()
+    create_table_sql = """
+    CREATE TABLE IF NOT EXISTS ventas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cliente TEXT NOT NULL,
+        producto TEXT NOT NULL,
+        cantidad INTEGER NOT NULL,
+        precio_unitario REAL NOT NULL,
+        total REAL NOT NULL
+    );
+    """
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(create_table_sql)
+        conn.commit()

@@ -31,7 +31,6 @@ def init_db():
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
     """
-
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(create_table_sql)
