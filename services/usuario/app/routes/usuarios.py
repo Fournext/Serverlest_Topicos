@@ -1,127 +1,151 @@
 from flask import Blueprint, jsonify, request
+from psycopg.errors import UniqueViolation
 from app.db import get_connection, init_db
 
+from app.db import get_connection
+
 usuarios_bp = Blueprint("usuarios", __name__)
-
 init_db()
-
 
 @usuarios_bp.get("/")
 def listar_usuarios():
-    conn = get_connection()
-    cursor = conn.cursor()
+    query = """
+        SELECT id, nombre, email, rol, created_at
+        FROM usuarios
+        ORDER BY id DESC
+    """
 
-    cursor.execute("SELECT id,nombre,email,rol FROM usuarios")
-    rows = cursor.fetchall()
-
-    conn.close()
-
-    usuarios = [dict(row) for row in rows]
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query)
+            usuarios = cur.fetchall()
 
     return jsonify({
         "total": len(usuarios),
         "usuarios": usuarios
-    })
+    }), 200
 
 
 @usuarios_bp.get("/<int:usuario_id>")
 def obtener_usuario(usuario_id):
-    conn = get_connection()
-    cursor = conn.cursor()
+    query = """
+        SELECT id, nombre, email, rol, created_at
+        FROM usuarios
+        WHERE id = %s
+    """
 
-    cursor.execute("SELECT id,nombre,email,rol FROM usuarios WHERE id=?", (usuario_id,))
-    row = cursor.fetchone()
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query, (usuario_id,))
+            usuario = cur.fetchone()
 
-    conn.close()
-
-    if not row:
+    if not usuario:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    return jsonify(dict(row))
+    return jsonify(usuario), 200
 
-
+# Crear Usuarios {nombre: , email: , password: , rol: }
 @usuarios_bp.post("/")
 def crear_usuario():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
 
-    nombre = data.get("nombre")
-    email = data.get("email")
-    password = data.get("password")
-    rol = data.get("rol", "user")
+    nombre = (data.get("nombre") or "").strip()
+    email = (data.get("email") or "").strip().lower()
+    password = (data.get("password") or "").strip()
+    rol = (data.get("rol") or "user").strip()
 
     if not nombre or not email or not password:
         return jsonify({"error": "nombre, email y password son obligatorios"}), 400
 
-    conn = get_connection()
-    cursor = conn.cursor()
+    query = """
+        INSERT INTO usuarios (nombre, email, password, rol)
+        VALUES (%s, %s, %s, %s)
+        RETURNING id, nombre, email, rol, created_at
+    """
 
     try:
-        cursor.execute("""
-            INSERT INTO usuarios (nombre,email,password,rol)
-            VALUES (?,?,?,?)
-        """, (nombre, email, password, rol))
-
-        conn.commit()
-        usuario_id = cursor.lastrowid
-
-    except Exception as e:
-        conn.close()
-        return jsonify({"error": str(e)}), 400
-
-    conn.close()
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(query, (nombre, email, password, rol))
+                usuario = cur.fetchone()
+            conn.commit()
+    except UniqueViolation:
+        return jsonify({"error": "El email ya existe"}), 400
 
     return jsonify({
-        "mensaje": "usuario creado",
-        "id": usuario_id
+        "mensaje": "Usuario creado correctamente",
+        "usuario": usuario
     }), 201
 
 
+# Editar Usuarios {nombre: , email: , password: , rol: }
 @usuarios_bp.put("/<int:usuario_id>")
 def actualizar_usuario(usuario_id):
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
 
-    nombre = data.get("nombre")
-    rol = data.get("rol")
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id, nombre, email, password, rol, created_at
+                FROM usuarios
+                WHERE id = %s
+                """,
+                (usuario_id,)
+            )
+            usuario_actual = cur.fetchone()
 
-    conn = get_connection()
-    cursor = conn.cursor()
+            if not usuario_actual:
+                return jsonify({"error": "Usuario no encontrado"}), 404
 
-    cursor.execute("SELECT * FROM usuarios WHERE id=?", (usuario_id,))
-    usuario = cursor.fetchone()
+            nombre = (data.get("nombre") or usuario_actual["nombre"]).strip()
+            email = (data.get("email") or usuario_actual["email"]).strip().lower()
+            password = (data.get("password") or usuario_actual["password"]).strip()
+            rol = (data.get("rol") or usuario_actual["rol"]).strip()
 
-    if not usuario:
-        conn.close()
-        return jsonify({"error": "Usuario no encontrado"}), 404
+            try:
+                cur.execute(
+                    """
+                    UPDATE usuarios
+                    SET nombre = %s,
+                        email = %s,
+                        password = %s,
+                        rol = %s
+                    WHERE id = %s
+                    RETURNING id, nombre, email, rol, created_at
+                    """,
+                    (nombre, email, password, rol, usuario_id)
+                )
+                usuario_actualizado = cur.fetchone()
+                conn.commit()
+            except UniqueViolation:
+                conn.rollback()
+                return jsonify({"error": "El email ya existe"}), 400
 
-    nombre = nombre or usuario["nombre"]
-    rol = rol or usuario["rol"]
-
-    cursor.execute("""
-        UPDATE usuarios
-        SET nombre=?, rol=?
-        WHERE id=?
-    """, (nombre, rol, usuario_id))
-
-    conn.commit()
-    conn.close()
-
-    return jsonify({"mensaje": "usuario actualizado"})
+    return jsonify({
+        "mensaje": "Usuario actualizado correctamente",
+        "usuario": usuario_actualizado
+    }), 200
 
 
 @usuarios_bp.delete("/<int:usuario_id>")
 def eliminar_usuario(usuario_id):
-    conn = get_connection()
-    cursor = conn.cursor()
+    query = """
+        DELETE FROM usuarios
+        WHERE id = %s
+        RETURNING id
+    """
 
-    cursor.execute("SELECT * FROM usuarios WHERE id=?", (usuario_id,))
-    usuario = cursor.fetchone()
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query, (usuario_id,))
+            eliminado = cur.fetchone()
+        conn.commit()
 
-    if not usuario:
-        conn.close()
+    if not eliminado:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    cursor.execute("DELETE FROM usuarios WHERE id=?", (usuario_id,))
-    conn.commit()
-    conn.close()
-
-    return jsonify({"mensaje": "usuario eliminado"})
+    return jsonify({
+        "mensaje": "Usuario eliminado correctamente",
+        "id": eliminado["id"]
+    }), 200
