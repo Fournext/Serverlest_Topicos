@@ -10,7 +10,7 @@ import models.usuario
 DATABASE_URL = os.environ["DATABASE_URL"]
 
 engine = create_engine(
-    DATABASE_URL,
+    DATABASE_URL.replace("postgresql://", "postgresql+psycopg://"),
     pool_pre_ping=True,
     pool_size=2,
     max_overflow=0,
