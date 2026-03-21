@@ -2,5 +2,5 @@ functions-framework==3.*
 flask
 sqlalchemy
 psycopg[binary]
-bycrypt
+bcrypt
 python-dotenv
