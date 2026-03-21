@@ -3,3 +3,16 @@ from usuarios.listar import listar_usuarios
 from usuarios.obtener import obtener_usuario
 from usuarios.actualizar import actualizar_usuario
 from usuarios.eliminar import eliminar_usuario
+from inventario.listar_productos import listar_productos
+from inventario.crear_producto import crear_producto
+from inventario.aumentar_stock import aumentar_stock
+from inventario.disminuir_stock import disminuir_stock
+from inventario.actualizar_producto import actualizar_producto
+from inventario.registrar_nota_salida import registrar_nota_salida
+from inventario.actualizar_nota_salida import actualizar_nota_salida
+from inventario.registrar_detalle_salida import registrar_detalle_salida
+from inventario.actualizar_detalle_salida import actualizar_detalle_salida
+from inventario.obtener_detalle_salida import obtener_detalle_salida
+from inventario.obtener_nota_salida import obtener_nota_salida
+from inventario.obtener_producto import obtener_producto
+from inventario.obtener_detalle_de_una_nota_salida import obtener_detalles_de_nota_salida
