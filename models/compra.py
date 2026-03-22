@@ -8,8 +8,10 @@ class Compra(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable=False)
+    proveedor_id: Mapped[int] = mapped_column(ForeignKey("proveedores.id"), nullable=True)
     total: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     estado: Mapped[str] = mapped_column(String(50), nullable=False, default="pendiente")
     created_at: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now())
 
     usuario = relationship("Usuario", backref="compras")
+    proveedor = relationship("Proveedor", backref="compras")

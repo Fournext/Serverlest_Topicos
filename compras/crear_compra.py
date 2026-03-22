@@ -16,8 +16,12 @@ def crear_compra(request):
     total = data.get("total")
     estado = data.get("estado", "pendiente")
 
+
     if not usuario_id or total is None:
         return jsonify({"ok": False, "message": "Faltan campos"}), 400
+
+    if not verificar_usuario(usuario_id):
+        return jsonify({"ok": False, "message": "El usuario no existe"}), 404
 
     session = SessionLocal()
 
