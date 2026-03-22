@@ -3,19 +3,26 @@ from common.bd import SessionLocal
 from models.usuario import Usuario
 
 
+from flask import jsonify
+
 def obtener_usuario(request):
     if request.method != "GET":
         return ("Method Not Allowed", 405)
 
-    user_id = request.args.get("id")
-
-    if not user_id:
-        return jsonify({"ok": False, "message": "ID requerido"}), 400
-
-    session = SessionLocal()
-
     try:
-        usuario = session.get(Usuario, int(user_id))
+        user_id = request.args.get("id")
+        if not user_id:
+            path_parts = request.path.rstrip("/").split("/")
+            user_id = path_parts[-1]
+
+        if not user_id.isdigit():
+            return jsonify({"ok": False, "message": "ID inválido"}), 400
+
+        user_id = int(user_id)
+
+        session = SessionLocal()
+
+        usuario = session.get(Usuario, user_id)
 
         if not usuario:
             return jsonify({"ok": False, "message": "No encontrado"}), 404
@@ -30,6 +37,9 @@ def obtener_usuario(request):
                 "created_at": str(usuario.created_at)
             }
         }), 200
+
+    except Exception as e:
+        return jsonify({"ok": False, "message": str(e)}), 500
 
     finally:
         session.close()

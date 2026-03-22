@@ -1,0 +1,41 @@
+swagger: '2.0'
+info:
+  title: topicos-api-gateway
+  description: Api de gateway para gestionar las rutas de los microservicios
+  version: 1.0.0
+
+schemes:
+  - https
+
+paths:
+  /usuario/listar:
+    get:
+      operationId: listarUsuarios
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/listar_usuarios
+      responses:
+        '200':
+          description: OK
+
+  /usuario/crear:
+    post:
+      operationId: crearUsuario
+      x-google-backend:
+        address: https://southamerica-east1-TU_PROYECTO.cloudfunctions.net/crear_usuario
+      responses:
+        '200':
+          description: OK
+  
+  /usuario/obtener/{id}:
+    get:
+      operationId: obtenerUsuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/obtener_usuario
+      responses:
+        '200':
+          description: OK
