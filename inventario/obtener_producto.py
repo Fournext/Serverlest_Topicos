@@ -16,14 +16,11 @@ def obtener_producto(request):
 			return jsonify({"ok": False, "message": "No encontrado"}), 404
 
 		return jsonify({
-			"ok": True,
-			"data": {
-				"id": producto.id,
-				"nombre": producto.nombre,
-				"descripcion": producto.descripcion,
-				"stock_actual": producto.stock_actual,
-				"created_at": str(producto.created_at)
-			}
+			"id": producto.id,
+			"nombre": producto.nombre,
+			"descripcion": producto.descripcion,
+			"stock_actual": producto.stock_actual,
+			"created_at": str(producto.created_at)
 		}), 200
 	finally:
 		session.close()
