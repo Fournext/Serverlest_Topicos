@@ -54,7 +54,7 @@ def obtener_producto(producto_id):
     try:
         resp = requests.get(f"{URLAPI}/inventario/obtener/{producto_id}")
         if resp.status_code == 200:
-            return resp.json().get("data")
+            return resp.json()
         return None
     except Exception:
         return None
