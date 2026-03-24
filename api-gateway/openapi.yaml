@@ -21,7 +21,7 @@ paths:
     post:
       operationId: crearUsuario
       x-google-backend:
-        address: https://southamerica-east1-TU_PROYECTO.cloudfunctions.net/crear_usuario
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_usuario
       responses:
         '200':
           description: OK
