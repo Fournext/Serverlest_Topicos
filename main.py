@@ -16,3 +16,6 @@ from inventario.obtener_detalle_salida import obtener_detalle_salida
 from inventario.obtener_nota_salida import obtener_nota_salida
 from inventario.obtener_producto import obtener_producto
 from inventario.obtener_detalle_de_una_nota_salida import obtener_detalles_de_nota_salida
+
+from compras.crear import crear_compra
+from compras.detalle_compra_crear import crear_detalle_compra

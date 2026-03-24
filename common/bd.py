@@ -9,6 +9,8 @@ import models.usuario
 import models.productos
 import models.nota_salida
 import models.detalle_salida
+import models.compra
+import models.detalle_compra
 
 DATABASE_URL = os.environ["DATABASE_URL"]
 

@@ -39,3 +39,39 @@ paths:
       responses:
         '200':
           description: OK
+
+  /compra/crear:
+    post:
+      operationId: crearCompra
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_compra
+      responses:
+        '201':
+          description: Created
+  
+  /detalle_compra/crear:
+    post:
+      operationId: crearDetalleCompra
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_detalle_compra
+      responses:
+        '201':
+          description: Created
+
+  /inventario/crear:
+    post:
+      operationId: crearProducto
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_producto
+      responses:
+        '201':
+          description: Created
+  
+  /inventario/aumentar_stock:
+    put:
+      operationId: aumentarStockProducto
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/aumentar_stock
+      responses:
+        '200':
+          description: OK
