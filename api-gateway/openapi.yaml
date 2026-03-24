@@ -66,6 +66,24 @@ paths:
       responses:
         '201':
           description: Created
+  
+  /compra/listar:
+    get:
+      operationId: listarCompras
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/listar_compras
+      responses:
+        '200':
+          description: OK
+
+  /detalle_compra/listar:
+    get:
+      operationId: listarDetalleCompra
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/listar_detalle_compra
+      responses:
+        '200':
+          description: OK
 
   /inventario/crear:
     post:
