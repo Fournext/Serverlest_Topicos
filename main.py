@@ -26,3 +26,5 @@ from ventas.anular_detalle_venta import anular_detalle_venta
 
 from compras.crear_compra import crear_compra
 from compras.detalle_compra_crear import crear_detalle_compra
+from compras.listar_compra import listar_compras
+from compras.listar_detallecompra import listar_detalle_compra
