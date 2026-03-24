@@ -7,7 +7,7 @@ def disminuir_stock(request):
 		return ("Method Not Allowed", 405)
 
 	data = request.get_json(silent=True) or {}
-	producto_id = data.get("id")
+	producto_id = data.get("producto_id")
 	cantidad = data.get("cantidad")
 	if not producto_id or cantidad is None:
 		return jsonify({"ok": False, "message": "ID y cantidad requeridos"}), 400
