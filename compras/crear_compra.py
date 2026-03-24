@@ -1,10 +1,10 @@
+
 from flask import jsonify
 from sqlalchemy.exc import IntegrityError
 from models.compra import Compra
 from common.bd import SessionLocal
 import requests
 
-URLUser = "/compras/crear"
 
 def crear_compra(request):
     if request.method != "POST":
@@ -16,6 +16,7 @@ def crear_compra(request):
     total = data.get("total")
     estado = data.get("estado", "pendiente")
 
+    detalles = data.get("detalles", [])
 
     if not usuario_id or total is None:
         return jsonify({"ok": False, "message": "Faltan campos"}), 400
@@ -36,14 +37,28 @@ def crear_compra(request):
         session.commit()
         session.refresh(compra)
 
+        detalles_creados = []
+        for detalle in detalles:
+            producto_id = detalle.get("producto_id")
+            precio_unitario = detalle.get("precio_unitario")
+            cantidad = detalle.get("cantidad")
+            if all([producto_id, precio_unitario, cantidad]):
+                detalle_resp = crear_detalle_compra(
+                    compra.id, producto_id, precio_unitario, cantidad
+                )
+                detalles_creados.append(detalle_resp)
+
+        response_data = {
+            "id": compra.id,
+            "usuario_id": compra.usuario_id,
+            "total": float(compra.total),
+            "estado": compra.estado,
+            "detalles": detalles_creados
+        }
+
         return jsonify({
             "ok": True,
-            "data": {
-                "id": compra.id,
-                "usuario_id": compra.usuario_id,
-                "total": float(compra.total),
-                "estado": compra.estado
-            }
+            "data": response_data
         }), 201
 
     except IntegrityError:
@@ -52,10 +67,26 @@ def crear_compra(request):
 
     finally:
         session.close()
+        
+def crear_detalle_compra(compra_id, producto_id, precio_unitario, cantidad):
+    try:
+        payload = {
+            "compra_id": compra_id,
+            "producto_id": producto_id,
+            "precio_unitario": precio_unitario,
+            "cantidad": cantidad
+        }
+        resp = requests.post("https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/compras/crear_detalle", json=payload)
+        if resp.status_code == 201:
+            return resp.json().get("data")
+        return {"error": "No se pudo crear el detalle de compra"}
+    except Exception:
+        return {"error": "Error al conectar con el servicio de detalle de compra"}
+
 
 def verificar_usuario(usuario_id):
     try:
-        response = requests.get(f"http://localhost:5000/usuarios/{usuario_id}")
+        response = requests.get(f"https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/usuarios/{usuario_id}")
         if response.status_code == 200:
             return True
         return False

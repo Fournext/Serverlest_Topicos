@@ -1,7 +1,6 @@
 from flask import jsonify
 from common.bd import SessionLocal
 from models.productos import Producto
-
 def obtener_producto(request):
 	if request.method != "GET":
 		return ("Method Not Allowed", 405)

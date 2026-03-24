@@ -2,8 +2,8 @@ from flask import jsonify
 from models.detalle_compra import DetallaCompra
 from common.bd import SessionLocal
 
-def eliminar_detallecompra(request):
-	if request.method != "DELETE":
+def anular_detallecompra(request):
+	if request.method != "PUT":
 		return ("Method Not Allowed", 405)
 
 	data = request.get_json(silent=True) or {}
@@ -16,9 +16,9 @@ def eliminar_detallecompra(request):
 		detalle = session.query(DetallaCompra).filter_by(id=detalle_id).first()
 		if not detalle:
 			return jsonify({"ok": False, "message": "Detalle de compra no encontrado"}), 404
-		session.delete(detalle)
+		detalle.estado = "anulado"
 		session.commit()
-		return jsonify({"ok": True, "message": "Detalle de compra eliminado", "data": {
+		return jsonify({"ok": True, "message": "Detalle de compra anulado", "data": {
 			"id": detalle.id,
 			"compra_id": detalle.compra_id,
 			"producto_id": detalle.producto_id,

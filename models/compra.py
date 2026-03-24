@@ -12,6 +12,3 @@ class Compra(Base):
     total: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     estado: Mapped[str] = mapped_column(String(50), nullable=False, default="pendiente")
     created_at: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now())
-
-    usuario = relationship("Usuario", backref="compras")
-    proveedor = relationship("Proveedor", backref="compras")

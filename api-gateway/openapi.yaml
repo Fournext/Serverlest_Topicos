@@ -39,3 +39,54 @@ paths:
       responses:
         '200':
           description: OK
+
+
+  /inventario/obtenerproducto/{id}:
+    get:
+      operationId: obtenerProducto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/obtener_producto
+      responses:
+        '200':
+          description: Producto obtenido
+
+  /compras/crear:
+    post:
+      operationId: crearCompra
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_compra
+      responses:
+        '201':
+          description: Compra creada
+
+  /compras/crear_detalle:
+    post:
+      operationId: crearDetalleCompra
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_detallecompra
+      responses:
+        '201':
+          description: Detalle de compra creado
+
+  /compras/anular_detalle:
+    post:
+      operationId: anularDetalleCompra
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/anular_detallecompra
+      responses:
+        '201':
+          description: Detalle de compra anulado
+
+  /compras/anular_compra:
+    post:
+      operationId: anularCompra
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/anular_compra
+      responses:
+        '201':
+          description: Compra anulada          

@@ -33,7 +33,13 @@ def anular_compra(request):
         compra.estado = "anulada"
         session.commit()
 
-        return jsonify({"ok": True, "message": "Compra anulada correctamente", "data": {
+        detalles = listar_detalles_por_compra(compra.id)
+        for detalle in detalles:
+            detalle_id = detalle.get("id")
+            if detalle_id:
+                anular_detalle_compra(detalle_id)
+
+        return jsonify({"ok": True, "message": "Compra y detalles anulados correctamente", "data": {
             "id": compra.id,
             "usuario_id": compra.usuario_id,
             "total": float(compra.total),
@@ -41,3 +47,19 @@ def anular_compra(request):
         }}), 200
     finally:
         session.close()
+        
+def listar_detalles_por_compra(compra_id):
+    try:
+        resp = requests.get(f"https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/compras/listar_detallecompra?compra_id={compra_id}")
+        if resp.status_code == 200:
+            return resp.json().get("data", [])
+        return []
+    except Exception:
+        return []
+
+def anular_detalle_compra(detalle_id):
+    try:
+        payload = {"id": detalle_id, "estado": "anulado"}
+        requests.put("https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/compras/anular_detallecompra", json=payload)
+    except Exception:
+        pass        
