@@ -3,6 +3,11 @@ from sqlalchemy.exc import IntegrityError
 from models.venta import Venta
 from common.bd import SessionLocal
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+URLAPI = os.environ["URLAPI"]
 
 def anular_venta(request):
 	if request.method != "PUT":

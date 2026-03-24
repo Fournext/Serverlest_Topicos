@@ -2,6 +2,11 @@ from flask import jsonify
 from sqlalchemy.exc import IntegrityError
 from models.venta import Venta
 from common.bd import SessionLocal
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+URLAPI = os.environ["URLAPI"]
 
 def listar_ventas(request):
 	if request.method != "GET":

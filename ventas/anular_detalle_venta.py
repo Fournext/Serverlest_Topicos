@@ -1,6 +1,11 @@
 from flask import jsonify
 from models.detalle_venta import DetalleVenta
 from common.bd import SessionLocal
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+URLAPI = os.environ["URLAPI"]
 
 def anular_detalle_venta(request):
     if request.method != "PUT":

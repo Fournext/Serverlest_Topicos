@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-URLAPI = os.environ.get("URLAPI", "")
+URLAPI = os.environ["URLAPI"]
 
 def crear_venta(request):
 	if request.method != "POST":
