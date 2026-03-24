@@ -1,10 +1,13 @@
-
-
 from flask import jsonify
 from sqlalchemy.exc import IntegrityError
 from models.detalle_compra import DetallaCompra
 from common.bd import SessionLocal
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+URLAPI = os.environ["URLAPI"]
 
 def crear_detalle_compra(request):
     if request.method != "POST":
@@ -66,7 +69,7 @@ def crear_detalle_compra(request):
 
 def obtener_producto(producto_id):
     try:
-        resp = requests.get(f"https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/inventario/obtenerproducto/{producto_id}")
+        resp = requests.get(f"{URLAPI}/inventario/obtener/{producto_id}")
         if resp.status_code == 200:
             return resp.json().get("data")
         return None
