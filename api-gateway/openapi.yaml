@@ -40,53 +40,38 @@ paths:
         '200':
           description: OK
 
-
-  /inventario/obtenerproducto/{id}:
-    get:
-      operationId: obtenerProducto
-      parameters:
-        - name: id
-          in: path
-          required: true
-          type: integer
-      x-google-backend:
-        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/obtener_producto
-      responses:
-        '200':
-          description: Producto obtenido
-
-  /compras/crear:
+  /compra/crear:
     post:
       operationId: crearCompra
       x-google-backend:
         address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_compra
       responses:
         '201':
-          description: Compra creada
-
-  /compras/crear_detalle:
+          description: Created
+  
+  /detalle_compra/crear:
     post:
       operationId: crearDetalleCompra
       x-google-backend:
-        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_detallecompra
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_detalle_compra
       responses:
         '201':
-          description: Detalle de compra creado
+          description: Created
 
-  /compras/anular_detalle:
+  /inventario/crear:
     post:
-      operationId: anularDetalleCompra
+      operationId: crearProducto
       x-google-backend:
-        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/anular_detallecompra
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_producto
       responses:
         '201':
-          description: Detalle de compra anulado
-
-  /compras/anular_compra:
-    post:
-      operationId: anularCompra
+          description: Created
+  
+  /inventario/aumentar_stock:
+    put:
+      operationId: aumentarStockProducto
       x-google-backend:
-        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/anular_compra
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/aumentar_stock
       responses:
-        '201':
-          description: Compra anulada          
+        '200':
+          description: OK

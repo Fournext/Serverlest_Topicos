@@ -3,5 +3,6 @@ from models.productos import Producto
 from models.nota_salida import NotaSalida
 from models.detalle_salida import DetalleSalida
 from models.compra import Compra
-from models.proveedor import Proveedor
-__all__ = ["Usuario", "Producto", "NotaSalida", "DetalleSalida", "Compra", "Proveedor"]
+from models.detalle_compra import DetalleCompra
+
+__all__ = ["Usuario", "Producto", "NotaSalida", "DetalleSalida", "Compra", "DetalleCompra"]
