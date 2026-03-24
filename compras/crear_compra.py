@@ -1,3 +1,4 @@
+
 from flask import jsonify
 from sqlalchemy.exc import IntegrityError
 from models.compra import Compra
@@ -72,6 +73,22 @@ def crear_compra(request):
 
     finally:
         session.close()
+        
+def crear_detalle_compra(compra_id, producto_id, precio_unitario, cantidad):
+    try:
+        payload = {
+            "compra_id": compra_id,
+            "producto_id": producto_id,
+            "precio_unitario": precio_unitario,
+            "cantidad": cantidad
+        }
+        resp = requests.post("https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/compras/crear_detalle", json=payload)
+        if resp.status_code == 201:
+            return resp.json().get("data")
+        return {"error": "No se pudo crear el detalle de compra"}
+    except Exception:
+        return {"error": "Error al conectar con el servicio de detalle de compra"}
+
 
 def verificar_usuario(usuario_id):
     try:

@@ -8,14 +8,21 @@ from inventario.crear_producto import crear_producto
 from inventario.aumentar_stock import aumentar_stock
 from inventario.disminuir_stock import disminuir_stock
 from inventario.actualizar_producto import actualizar_producto
-from inventario.registrar_nota_salida import registrar_nota_salida
-from inventario.actualizar_nota_salida import actualizar_nota_salida
-from inventario.registrar_detalle_salida import registrar_detalle_salida
-from inventario.actualizar_detalle_salida import actualizar_detalle_salida
-from inventario.obtener_detalle_salida import obtener_detalle_salida
-from inventario.obtener_nota_salida import obtener_nota_salida
+#from inventario.registrar_nota_salida import registrar_nota_salida
+#from inventario.actualizar_nota_salida import actualizar_nota_salida
+#from inventario.registrar_detalle_salida import registrar_detalle_salida
+#from inventario.actualizar_detalle_salida import actualizar_detalle_salida
+#from inventario.obtener_detalle_salida import obtener_detalle_salida
+#from inventario.obtener_nota_salida import obtener_nota_salida
 from inventario.obtener_producto import obtener_producto
-from inventario.obtener_detalle_de_una_nota_salida import obtener_detalles_de_nota_salida
+#from inventario.obtener_detalle_de_una_nota_salida import obtener_detalles_de_nota_salida
 
-from compras.crear import crear_compra
+from ventas.crear_venta import crear_venta
+from ventas.listar_venta import listar_ventas
+from ventas.anular_venta import anular_venta    
+from ventas.listar_detalle_venta import listar_detalle_venta
+from ventas.crear_detalle_venta import crear_detalle_venta  
+from ventas.anular_detalle_venta import anular_detalle_venta    
+
+from compras.crear_compra import crear_compra
 from compras.detalle_compra_crear import crear_detalle_compra

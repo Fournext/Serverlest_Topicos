@@ -7,8 +7,8 @@ load_dotenv()
 
 import models.usuario
 import models.productos
-import models.nota_salida
-import models.detalle_salida
+import models.venta
+import models.detalle_venta
 import models.compra
 import models.detalle_compra
 

@@ -75,3 +75,21 @@ paths:
       responses:
         '200':
           description: OK
+
+  /venta/crear_detalle_venta:
+    put:
+      operationId: crearDetalleVenta
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_detalle_venta
+      responses:
+        '200':
+          description: OK          
+  
+  /venta/anular_detalle_venta:
+    put:
+      operationId: anularDetalleVenta
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/anular_detalle_venta
+      responses:
+        '200':
+          description: OK          
