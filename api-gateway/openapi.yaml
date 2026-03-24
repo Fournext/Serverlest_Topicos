@@ -26,6 +26,15 @@ paths:
         '200':
           description: OK
   
+  /usuario/actualizar:
+    put:
+      operationId: actualizarUsuario
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/actualizar_usuario
+      responses:
+        '200':
+          description: OK
+  
   /usuario/obtener/{id}:
     get:
       operationId: obtenerUsuario
@@ -67,6 +76,38 @@ paths:
         '201':
           description: Created
   
+  /inventario/disminuir_stock:
+    put:
+      operationId: disminuirStockProducto
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/disminuir_stock
+      responses:
+        '200':
+          description: OK
+  
+  /inventario/obtener/{id}:
+    get:
+      operationId: obtenerProducto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/obtener_producto
+      responses:
+        '200':
+          description: OK
+  
+  /inventario/listar:
+    get:
+      operationId: listarProductos
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/listar_productos
+      responses:
+        '200':
+          description: OK
+
   /inventario/aumentar_stock:
     put:
       operationId: aumentarStockProducto
