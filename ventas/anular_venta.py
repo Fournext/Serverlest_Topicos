@@ -26,9 +26,9 @@ def anular_venta(request):
 	session = SessionLocal()
 	try:
 		if venta_id:
-			venta = session.query(Venta).filter_by(id=venta_id, usario_id=usuario_id).first()
+			venta = session.query(Venta).filter_by(id=venta_id, usuario_id=usuario_id).first()
 		else:
-			venta = session.query(Venta).filter_by(usario_id=usuario_id, total=total, estado=estado).first()
+			venta = session.query(Venta).filter_by(usuario_id=usuario_id, total=total, estado=estado).first()
 
 		if not venta:
 			return jsonify({"ok": False, "message": "Venta no encontrada"}), 404
@@ -44,7 +44,7 @@ def anular_venta(request):
 
 		return jsonify({"ok": True, "message": "Venta y detalles anulados correctamente", "data": {
 			"id": venta.id,
-			"usuario_id": venta.usario_id,
+			"usuario_id": venta.usuario_id,
 			"total": float(venta.total),
 			"estado": venta.estado
 		}}), 200
