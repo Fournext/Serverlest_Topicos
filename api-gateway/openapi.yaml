@@ -67,18 +67,28 @@ paths:
         '201':
           description: Created
   
-  /compra/listar:
+  /compra/listar/{id}:
     get:
       operationId: listarCompras
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
       x-google-backend:
         address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/listar_compras
       responses:
         '200':
           description: OK
 
-  /detalle_compra/listar:
+  /detalle_compra/listar/{id}:
     get:
       operationId: listarDetalleCompra
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
       x-google-backend:
         address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/listar_detalle_compra
       responses:
