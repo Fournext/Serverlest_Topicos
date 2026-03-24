@@ -58,6 +58,7 @@ coverage.xml
 # dotenv
 .env
 .env.*
+env.yaml
 
 # Database
 *.sqlite3
