@@ -75,6 +75,24 @@ paths:
       responses:
         '200':
           description: OK
+          
+  /inventario/disminuir_stock:
+    put:
+      operationId: disminuirStockProducto
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/disminuir_stock
+      responses:
+        '200':
+          description: OK      
+
+  /venta/crear:
+    post:
+      operationId: crearVenta
+      x-google-backend:
+        address: https://southamerica-east1-gen-lang-client-0878332190.cloudfunctions.net/crear_venta
+      responses:
+        '200':
+          description: OK
 
   /venta/crear_detalle_venta:
     put:

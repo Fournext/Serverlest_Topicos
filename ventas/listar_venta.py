@@ -22,11 +22,11 @@ def listar_ventas(request):
 
 	session = SessionLocal()
 	try:
-		ventas = session.query(Venta).filter(Venta.usario_id == usuario_id, Venta.estado != "anulada").all()
+		ventas = session.query(Venta).filter(Venta.usuario_id == usuario_id, Venta.estado != "anulada").all()
 		ventas_list = [
 			{
 				"id": v.id,
-				"usuario_id": v.usario_id,
+				"usuario_id": v.usuario_id,
 				"total": float(v.total),
 				"estado": v.estado
 			}
