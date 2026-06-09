@@ -34,6 +34,7 @@ def listar_compras(request):
             {
                 "id": c.id,
                 "usuario": usuario,
+                "detalle_compra": obtener_detalle_compra(c.id),
                 "total": float(c.total),
                 "estado": c.estado
             }
@@ -51,3 +52,15 @@ def verificar_usuario(usuario_id):
         return None
     except requests.RequestException:
         return None
+
+def obtener_detalle_compra(compra_id):
+    try:
+        response = requests.get(f"{URLAPI}/detalle_compra/listar/{compra_id}")
+        if response.status_code == 200:
+            res_json = response.json()
+            if isinstance(res_json, dict) and res_json.get("ok"):
+                return res_json.get("data", [])
+            return res_json
+        return []
+    except requests.RequestException:
+        return []

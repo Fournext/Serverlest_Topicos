@@ -171,3 +171,31 @@ paths:
       responses:
         '200':
           description: OK          
+
+  /venta/listar/{id}:
+    get:
+      operationId: listarVentas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      x-google-backend:
+        address: https://southamerica-east1-serverlest-topicos-496317.cloudfunctions.net/listar_ventas
+      responses:
+        '200':
+          description: OK
+
+  /detalle_venta/listar/{id}:
+    get:
+      operationId: listarDetalleVenta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      x-google-backend:
+        address: https://southamerica-east1-serverlest-topicos-496317.cloudfunctions.net/listar_detalle_venta
+      responses:
+        '200':
+          description: OK
